@@ -17,13 +17,13 @@
     const map = L.map('map', {
       minZoom: 0,
       maxZoom: 15,
-      zoom: 9,
+      zoom: 10,
       crs: L.CRS.Simple
     });
 
-    map.fitBounds([[30976, 31744], [32768, 34048]]); // rätt bounds
+    map.fitBounds([[30976, 31744], [32768, 34048]]);
 
-    L.tileLayer('TibiaMaps/tiles/{z}/{x}/{y}.png', {
+    L.tileLayer('tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
       noWrap: true,
       attribution: '&copy; TibiaMaps.io / TibiaSweden.se'

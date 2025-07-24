@@ -22,7 +22,8 @@
       crs: L.CRS.Simple
     });
 
-    L.tileLayer('tiles/{z}/{x}/{y}.png', {
+    // 🔥 OBS! Detta pekar rätt i en projekt-sida som yamixs.github.io/TibiaMaps/
+    L.tileLayer('TibiaMaps/tiles/{z}/{x}/{y}.png', {
       tileSize: 256,
       noWrap: true,
       attribution: '&copy; TibiaMaps.io / TibiaSweden.se'

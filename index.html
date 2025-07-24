@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>TibiaSweden Map (Z-våningar)</title>
+  <title>TibiaSweden Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <style>
     html, body { margin: 0; height: 100%; background: #000; }
@@ -54,34 +54,51 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     const basePath = 'TibiaMaps/tiles/';
-    const bounds = L.latLngBounds(
-      L.latLng(30976, 31744),
-      L.latLng(32768, 34048)
-    );
+    const tileSize = 256;
 
-const map = L.map('map', {
-  minZoom: 0,
-  maxZoom: 0,
-  crs: L.CRS.Simple,
-  maxBounds: bounds,
-  maxBoundsViscosity: 1.0
-}).setView([31872, 32800], 0); // fix: mitten av kartan
+    // Tibia tile grid offset (TibiaMaps startar här)
+    const tileOffsetX = 31744;
+    const tileOffsetY = 30976;
 
-    let currentFloor = 8; // z=7 = marknivå i Tibia
-    let tileLayer = L.tileLayer(basePath + currentFloor + '/{x}/{y}.png', {
-      tileSize: 256,
-      noWrap: true,
-      attribution: '&copy; TibiaMaps.io / TibiaSweden.se'
-    }).addTo(map);
+    // Bounds för hela kartan (viktigt!)
+    const southWest = L.latLng(32768, 31744);
+    const northEast = L.latLng(30976, 33280);
+    const bounds = L.latLngBounds(southWest, northEast);
+
+    const map = L.map('map', {
+      crs: L.CRS.Simple,
+      minZoom: 0,
+      maxZoom: 0,
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0
+    });
+
+    map.fitBounds(bounds);
+
+    let currentFloor = 8;
+
+    function createTileLayer(floor) {
+      return L.tileLayer('', {
+        tileSize: tileSize,
+        noWrap: true,
+        minNativeZoom: 0,
+        maxNativeZoom: 0,
+        bounds: bounds,
+        attribution: '&copy; TibiaMaps.io / TibiaSweden.se',
+        getTileUrl: function(coords) {
+          const x = coords.x + tileOffsetX;
+          const y = coords.y + tileOffsetY;
+          return `${basePath}${floor}/${x}/${y}.png`;
+        }
+      });
+    }
+
+    let tileLayer = createTileLayer(currentFloor).addTo(map);
 
     document.getElementById("floorSelect").addEventListener("change", function(e) {
       currentFloor = e.target.value;
       map.removeLayer(tileLayer);
-      tileLayer = L.tileLayer(basePath + currentFloor + '/{x}/{y}.png', {
-        tileSize: 256,
-        noWrap: true,
-        attribution: '&copy; TibiaMaps.io / TibiaSweden.se'
-      }).addTo(map);
+      tileLayer = createTileLayer(currentFloor).addTo(map);
     });
   </script>
 </body>

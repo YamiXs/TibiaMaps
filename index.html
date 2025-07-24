@@ -21,6 +21,8 @@
       zoom: 9,
       crs: L.CRS.Simple
     });
+    
+map.fitBounds([[30976, 31744], [32768, 34048]]);
 
     // 🔥 OBS! Detta pekar rätt i en projekt-sida som yamixs.github.io/TibiaMaps/
     L.tileLayer('TibiaMaps/tiles/{z}/{x}/{y}.png', {

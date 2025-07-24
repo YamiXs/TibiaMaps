@@ -59,13 +59,13 @@
       L.latLng(32768, 34048)
     );
 
-    const map = L.map('map', {
-      minZoom: 0,
-      maxZoom: 0,
-      crs: L.CRS.Simple,
-      maxBounds: bounds,
-      maxBoundsViscosity: 1.0
-    }).fitBounds(bounds);
+const map = L.map('map', {
+  minZoom: 0,
+  maxZoom: 0,
+  crs: L.CRS.Simple,
+  maxBounds: bounds,
+  maxBoundsViscosity: 1.0
+}).setView([31872, 32800], 0); // fix: mitten av kartan
 
     let currentFloor = 8; // z=7 = marknivå i Tibia
     let tileLayer = L.tileLayer(basePath + currentFloor + '/{x}/{y}.png', {

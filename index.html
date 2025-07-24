@@ -14,9 +14,15 @@
       z-index: 1000;
       background: rgba(0, 0, 0, 0.7);
       color: white;
-      padding: 5px;
+      padding: 5px 10px;
       border-radius: 8px;
       font-family: sans-serif;
+    }
+    #floorSelect {
+      background: #222;
+      color: #fff;
+      border: none;
+      padding: 2px 5px;
     }
   </style>
 </head>
@@ -47,21 +53,30 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
-    const bounds = [[30976, 31744], [32768, 34048]];
+    // Kartans koordinater
+    const southWest = L.latLng(30976, 31744);
+    const northEast = L.latLng(32768, 34048);
+    const bounds = L.latLngBounds(southWest, northEast);
 
     const map = L.map('map', {
       minZoom: 0,
       maxZoom: 0,
-      crs: L.CRS.Simple
+      crs: L.CRS.Simple,
+      maxBounds: bounds,
+      maxBoundsViscosity: 1.0
     }).fitBounds(bounds);
 
+    // Startvåning
     let currentFloor = 7;
+
+    // Ladda initial tileLayer
     let tileLayer = L.tileLayer('tiles/' + currentFloor + '/{x}/{y}.png', {
       tileSize: 256,
       noWrap: true,
       attribution: '&copy; TibiaMaps.io / TibiaSweden.se'
     }).addTo(map);
 
+    // Byt våning
     document.getElementById("floorSelect").addEventListener("change", function(e) {
       currentFloor = e.target.value;
       map.removeLayer(tileLayer);
